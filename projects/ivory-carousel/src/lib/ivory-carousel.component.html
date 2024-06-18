@@ -1,0 +1,57 @@
+<ng-container>
+  <div class="slide-wrapper" #outerSlide (mouseover)="startPausing()" (mouseleave)="startPlayML()">
+    <div class="owl-nav">
+      <div
+        aria-label="Previous Item"
+        [attr.tabindex]="clicksMade == 0 ? '-1' : '0'"
+        [attr.aria-hidden]="clicksMade == 0"
+        role="button"
+        (click)="prev(true)"
+        (keydown.enter)="prev(true)"
+        [ngStyle]="iconPos && { left: iconPos + 'px' }"
+        class="owl-prev"
+        [ngClass]="{ disabled: clicksMade == 0 }"
+        [innerHTML]="prevTag"
+      ></div>
+    </div>
+    <div class="slide-container-outer" [ngStyle]="{ width: carouselWidth + 'px' }">
+      <div style="transform: translate3d(0px, 0px, 0px)" [ngStyle]="{ transition: navSpeed }" class="main-slide-container" #slideContainer>
+        <ng-container *ngFor="let slide of slides; let i = index">
+          <div class="slide-item owl-item-{{ i }}" #slideBox>
+            <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="owl-nav">
+      <div
+        aria-label="Next Item"
+        role="button"
+        [attr.aria-hidden]="clicksMade == clicksAllowed"
+        [attr.tabindex]="clicksMade == clicksAllowed ? '-1' : '0'"
+        (click)="next(true)"
+        (keydown.enter)="next(true)"
+        [ngStyle]="iconPos && { right: iconPos + 'px' }"
+        class="owl-next"
+        [ngClass]="{ disabled: clicksMade == clicksAllowed }"
+        [innerHTML]="nextTag"
+      ></div>
+    </div>
+    <div class="owl-dots">
+      <div
+        *ngFor="let dot of dotsArray; let in = index"
+        class="owl-dot"
+        [ngClass]="{ active: selectedDot === in }">
+        <span
+          class="owl-dot-ele"
+          (click)="dotClick(in, true)"
+          (keydown.enter)="dotClick(in, true)"
+          tabindex="0"
+          role="button"
+          attr.aria-label="Carousel item  {{ in + 1 }} of {{ dotsArray.length }}">
+        </span>
+      </div>
+    </div>
+    <div aria-live="polite" aria-atomic="true" class="liveregion visuallyhidden" #liveregion></div>
+  </div>
+</ng-container>
